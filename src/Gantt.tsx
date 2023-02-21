@@ -5,8 +5,8 @@ export function TableHead({ len }: { len: number }) {
         <tr>
             <th colSpan={len + 1}>Gantt Chart</th>
         </tr>
-        <tr style={{ textAlign: "end" }}>
-            {new Array(len + 1).fill(0).map((_, i) => 
+        <tr>
+            {new Array(len + 1).fill(0).map((_, i) =>
                 <th key={i}>&nbsp;</th>
             )}
         </tr>
@@ -16,28 +16,28 @@ export function Gantt({ result }: { result: Result<Task> }) {
     console.table(result)
     let burstTimeSum = 0;
     return <>
-        <table style={{ width: "100%" }}>
+        <table style={{ width: "100%", tableLayout:"fixed" }}>
             <TableHead len={result.total.burstTime} />
             <tbody>
                 <tr>
                     <td></td>{/* for alignment as an extra column is added by TableHead */}
                     {result.tasks.map(task =>
-                        <td 
-                            key={task.id} 
-                            colSpan={task.burstTime} 
-                            style={{ 
-                                textAlign: "center", 
-                                border: "2px solid black", borderRadius: "5px" 
+                        <td
+                            key={task.id}
+                            colSpan={task.burstTime}
+                            style={{
+                                textAlign: "center",
+                                border: "2px solid black", borderRadius: "5px",
                             }}>
-                            P<sub>{task.id}</sub>
+                            P<sub>{task.id}</sub><wbr />
                             ({task.burstTime})
                         </td>
                     )}
                 </tr>
                 <tr>
-                    <tr style={{ textAlign: "end" }}>
+                    <td style={{ textAlign: "end" }}>
                         0
-                    </tr>
+                    </td>
                     {result.tasks.map(task =>
                         <td
                             key={task.id}
