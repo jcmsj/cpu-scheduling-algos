@@ -1,29 +1,38 @@
 import { Result, Task } from "./Task";
 
-export function DanglingBurstTime({ time }: { time: number }) {
-    return <span style={{ 
-        textAlign: "end", 
-        position: "relative", 
-        right: "-0.75em", 
-        bottom: "-1.5em" 
-    }}>
+export function DanglingBurstTime({ time, style,...props }: { time: number, style?:React.CSSProperties }) {
+    return <span style={{
+        textAlign: "end",
+        position: "relative",
+        ...style
+    }}
+        {...props}
+    >
         {time}
+    </span >
+}
+
+export function ProcessInfo({ task }: { task: Task }) {
+    return <span style={{
+        border: "0.2em solid black",
+    }} >
+        <span>
+            P<sub>{task.id}</sub>
+            ({task.burstTime})
+        </span>
     </span>
 }
-export function Cell({ task, accumulatedBurstTime, ...props }: { task: Task, accumulatedBurstTime: number }) {
+export function Cell({ burstTime, children }: { burstTime: number } & React.PropsWithChildren) {
     return <>
-        <span className="" style={{
-            display: "flex",
-            flexDirection: "column",
-            width: `${task.burstTime * 100}%`,
-            border: "0.2em solid black",
-        }} {...props} >
-            <span>
-                P<sub>{task.id}</sub><wbr />
-                ({task.burstTime})
-            </span>
-            <DanglingBurstTime time={accumulatedBurstTime} />
-        </span>
+        <div className="cell"
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                //Cell width scales with burst time
+                width: `${burstTime * 100}%`,
+            }}>
+            {children}
+        </div>
     </>
 }
 
@@ -32,8 +41,20 @@ export function GanttChart({ result }: { result: Result<Task> }) {
     return <>
         <h2 style={{ textAlign: "center" }}>Gantt Chart</h2>
         <div style={{ display: "flex", textAlign: "center", padding: "2vh 2vw" }}>
+            <Cell burstTime={0}>
+                <span style={{ height: "100%" }}>&nbsp;</span>
+                <DanglingBurstTime time={0} style={{left:"-0.3em"}}/>
+            </Cell>
             {result.tasks.map(task =>
-                <Cell task={task} key={task.id} accumulatedBurstTime={burstTimeSum += task.burstTime} />
+                <Cell key={task.id} burstTime={task.burstTime}>
+                    <ProcessInfo task={task} />
+                    <DanglingBurstTime
+                        time={burstTimeSum += task.burstTime}
+                        style={{
+                            right: "-0.25em",
+                        }}
+                    />
+                </Cell>
             )}
         </div>
     </>
