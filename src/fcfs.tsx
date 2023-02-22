@@ -3,7 +3,7 @@ import { fcfs } from "./algos/fcfs";
 import { Result, Task } from "./Task";
 import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
-import { Gantt } from "./Gantt";
+import { GanttChart } from "./Gantt";
 export default function FCFSPage() {
     const [result, setResult] = useState<{} | Result<Task>>({});
     const [raw_burst_times, setRawBurstTimes] = useState("");
@@ -38,9 +38,10 @@ export default function FCFSPage() {
         >Calculate
         </Button>
         {Object.hasOwn(result, "tasks") ?
-            <Gantt result={result}>
+        
+            <GanttChart result={result}>
 
-            </Gantt> : null
+            </GanttChart> : null
         }
     </>
 }

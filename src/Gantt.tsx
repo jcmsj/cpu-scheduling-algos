@@ -1,53 +1,40 @@
 import { Result, Task } from "./Task";
 
-export function TableHead({ len }: { len: number }) {
-    return <thead>
-        <tr>
-            <th colSpan={len + 1}>Gantt Chart</th>
-        </tr>
-        <tr>
-            {new Array(len + 1).fill(0).map((_, i) =>
-                <th key={i}>&nbsp;</th>
-            )}
-        </tr>
-    </thead>
+export function DanglingBurstTime({ time }: { time: number }) {
+    return <span style={{ 
+        textAlign: "end", 
+        position: "relative", 
+        right: "-0.75em", 
+        bottom: "-1.5em" 
+    }}>
+        {time}
+    </span>
 }
-export function Gantt({ result }: { result: Result<Task> }) {
-    console.table(result)
+export function Cell({ task, accumulatedBurstTime, ...props }: { task: Task, accumulatedBurstTime: number }) {
+    return <>
+        <span className="" style={{
+            display: "flex",
+            flexDirection: "column",
+            width: `${task.burstTime * 100}%`,
+            border: "0.2em solid black",
+        }} {...props} >
+            <span>
+                P<sub>{task.id}</sub><wbr />
+                ({task.burstTime})
+            </span>
+            <DanglingBurstTime time={accumulatedBurstTime} />
+        </span>
+    </>
+}
+
+export function GanttChart({ result }: { result: Result<Task> }) {
     let burstTimeSum = 0;
     return <>
-        <table style={{ width: "100%", tableLayout:"fixed" }}>
-            <TableHead len={result.total.burstTime} />
-            <tbody>
-                <tr>
-                    <td></td>{/* for alignment as an extra column is added by TableHead */}
-                    {result.tasks.map(task =>
-                        <td
-                            key={task.id}
-                            colSpan={task.burstTime}
-                            style={{
-                                textAlign: "center",
-                                border: "2px solid black", borderRadius: "5px",
-                            }}>
-                            P<sub>{task.id}</sub><wbr />
-                            ({task.burstTime})
-                        </td>
-                    )}
-                </tr>
-                <tr>
-                    <td style={{ textAlign: "end" }}>
-                        0
-                    </td>
-                    {result.tasks.map(task =>
-                        <td
-                            key={task.id}
-                            colSpan={task.burstTime}
-                            style={{ textAlign: "end" }}
-                        >
-                            {burstTimeSum += task.burstTime}</td>
-                    )}
-                </tr>
-            </tbody>
-        </table>
+        <h2 style={{ textAlign: "center" }}>Gantt Chart</h2>
+        <div style={{ display: "flex", textAlign: "center", padding: "2vh 2vw" }}>
+            {result.tasks.map(task =>
+                <Cell task={task} key={task.id} accumulatedBurstTime={burstTimeSum += task.burstTime} />
+            )}
+        </div>
     </>
 }
