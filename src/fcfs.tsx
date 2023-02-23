@@ -9,7 +9,6 @@ export default function FCFSPage() {
     const [raw_burst_times, setRawBurstTimes] = useState("");
 
     function parseTasks() {
-
         //Convert the string data into int array
         const tasks: Task[] = raw_burst_times.split(" ").map(n => parseInt(n))
             //Then form the task objects from the array
@@ -24,12 +23,16 @@ export default function FCFSPage() {
         //Finally, calculate the schedule using FCFS algorithm
         setResult(fcfs(tasks));
     }
+
+    function filter(e:React.ChangeEvent<HTMLInputElement>) {
+        setRawBurstTimes(e.target.value.trim());
+    }
     return <>
         <div style={{ display: "flex", flexDirection: "column", rowGap: "2vh" }}>
             <TextField
                 required
                 label="Enter burst time (space separated)"
-                onChange={e => setRawBurstTimes(e.target.value)}
+                onChange={filter}
             />
         </div>
         <Button
