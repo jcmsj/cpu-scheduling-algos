@@ -1,50 +1,32 @@
 import { useState } from "react";
 import { fcfs } from "./algos/fcfs";
+import { InputData } from "./InputData";
+import { parseTasks } from "./parser";
+import ChartAndTable from "./ChartAndTable";
 import { Result, Task } from "./Task";
-import TextField from "@mui/material/TextField"
-import Button from "@mui/material/Button"
-import { GanttChart } from "./Gantt";
+
 export default function FCFSPage() {
-    const [result, setResult] = useState<{} | Result<Task>>({});
-    const [raw_burst_times, setRawBurstTimes] = useState("");
-
-    function parseTasks() {
-        //Convert the string data into int array
-        const tasks: Task[] = raw_burst_times.split(" ").map(n => parseInt(n))
-            //Then form the task objects from the array
-            .map((burstTime, i) => {
-                return {
-                    id: "" + i,
-                    burstTime,
-                    waitingTime: 0,
-                    turnAroundTime: 0
-                }
-            });
-        //Finally, calculate the schedule using FCFS algorithm
-        setResult(fcfs(tasks));
+    const [result, setResult] = useState<Result<Task>>({} as any);
+    const [rawBursts, setRawBursts] = useState("");
+    const [rawArrivals, setRawArrivals] = useState("");
+    function updateTasks() {
+        // Parse tasks => feed to algorithm => update gui
+        setResult(fcfs(parseTasks(rawBursts, rawArrivals)));
     }
 
-    function filter(e:React.ChangeEvent<HTMLInputElement>) {
-        setRawBurstTimes(e.target.value.trim());
-    }
-    return <>
-        <div style={{ display: "flex", flexDirection: "column", rowGap: "2vh" }}>
-            <TextField
-                required
-                label="Enter burst time (space separated)"
-                onChange={filter}
-            />
-        </div>
-        <Button
-            variant="contained"
-            onClick={parseTasks}
-        >Calculate
-        </Button>
-        {Object.hasOwn(result, "tasks") ?
-        
-            <GanttChart result={result}>
-
-            </GanttChart> : null
+    function prepFilter(setter: React.Dispatch<React.SetStateAction<string>>) {
+        return (e: React.ChangeEvent<HTMLInputElement>) => {
+            setter(e.target.value);
         }
+    }
+
+    return <>
+        <InputData
+            onInputArrival={prepFilter(setRawArrivals)}
+            onInputBurst={prepFilter(setRawBursts)}
+            onSolve={updateTasks}
+        >
+        </InputData>
+        <ChartAndTable result={result} />
     </>
 }

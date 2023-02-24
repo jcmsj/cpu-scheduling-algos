@@ -3,23 +3,18 @@ export interface Task {
     burstTime: number;
     waitingTime: number;
     turnAroundTime: number;
-}
-
-export interface TaskWithArrival extends Task {
     arrivalTime:number;
-}
-
-export interface TaskWithPriority extends Task {
+    finishTime:number;
     priority:number;
 }
 
-export interface TurnAroundAndWaitingTime {
+export interface CalculatedFields {
     waitingTime:number;
     turnAroundTime:number;
     burstTime:number;
 }
-export interface Result<T extends Task> {
+export interface Result<T> {
+    average:CalculatedFields;
+    total:CalculatedFields;
     tasks:T[];
-    average:TurnAroundAndWaitingTime;
-    total:TurnAroundAndWaitingTime;
 }

@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import { Result, Task } from "./Task";
 
 export function DanglingBurstTime({ time, style, ...props }: { time: number, style?: React.CSSProperties }) {
@@ -21,7 +22,7 @@ export function ProcessInfo({ task, style }: { task: Task, style: React.CSSPrope
     >
         P<sub>{task.id}</sub>
         ({task.burstTime})
-    </span>
+    </span>;
 }
 export function Cell({ burstTime, style, children }: { burstTime: number, style?: React.CSSProperties } & React.PropsWithChildren) {
     return <div className="cell"
@@ -45,39 +46,46 @@ function assignColor(accumulatedBurstTime: number, modifier: number) {
     return `hsl(${accumulatedBurstTime * modifier}, 100%, 60%)`;
 }
 
-export function GanttChart({ result }: { result: Result<Task> }) {
+export function GanttChart({ result }: { result: Partial<Result<Task>> }) {
     let burstTimeSum = 0;
 
     return <>
-        <h2 style={{ textAlign: "center" }}>Simple Gantt Chart</h2>
+        <Typography variant="h3" style={{ textAlign: "center" }}>Gantt Chart</Typography>
         <div style={{
             display: "flex",
             textAlign: "center",
             padding: "2vh 2vw"
         }}>
-            {/* Make the gantt's zero start a bit before the first cell  */}
-            <Cell burstTime={0}>
-                <span style={{ height: "100%" }}>&nbsp;</span>
-                <DanglingBurstTime time={0} style={{ left: "-0.3em" }} />
-            </Cell>
-            {result.tasks.map(task =>
-                <Cell key={task.id}
-                    burstTime={task.burstTime}
-                >
-                    <ProcessInfo
-                        task={task}
-                        style={{
-                            backgroundColor: assignColor(burstTimeSum, task.burstTime * 17)
-                        }}
-                    />
-                    <DanglingBurstTime
-                        time={burstTimeSum += task.burstTime}
-                        style={{
-                            right: "-0.25em",
-                        }}
-                    />
-                </Cell>
-            )}
+            {result.tasks == undefined ?
+                <>
+                    <Typography variant="h5">No data to display</Typography>
+                </> :
+                <>
+                    {/* Make the gantt's zero start a bit before the first cell  */}
+                    < Cell burstTime={0}>
+                        <span style={{ height: "100%" }}>&nbsp;</span>
+                        <DanglingBurstTime time={0} style={{ left: "-0.3em" }} />
+                    </Cell>
+                    {result.tasks.map(task =>
+                        <Cell key={task.id}
+                            burstTime={task.burstTime}
+                        >
+                            <ProcessInfo
+                                task={task}
+                                style={{
+                                    backgroundColor: assignColor(burstTimeSum, task.burstTime * 17)
+                                }}
+                            />
+                            <DanglingBurstTime
+                                time={burstTimeSum += task.burstTime}
+                                style={{
+                                    right: "-0.25em",
+                                }}
+                            />
+                        </Cell>
+                    )}
+                </>
+            }
         </div>
     </>
 }

@@ -1,0 +1,11 @@
+.divider {
+    display: grid;
+    row-gap: 3vh;
+}
+
+@media screen and (min-width: 1024px) {
+    .divider {
+        grid-template-columns: 3fr 7fr;
+        column-gap: 3vh;
+    }
+}
