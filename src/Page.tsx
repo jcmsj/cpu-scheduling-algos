@@ -1,17 +1,20 @@
 import { useState } from "react";
-import { fcfs } from "./algos/fcfs";
 import { InputData } from "./InputData";
 import { parseTasks } from "./parser";
 import ChartAndTable from "./ChartAndTable";
 import { Result, Task } from "./Task";
 
-export default function FCFSPage() {
+export default function Page({algo, showPriority=false}:{
+    algo:(tasks:Task[])=>Result<Task>,
+    showPriority?:boolean,
+}) {
     const [result, setResult] = useState<Result<Task>>({} as any);
     const [rawBursts, setRawBursts] = useState("");
     const [rawArrivals, setRawArrivals] = useState("");
+    const [rawPriorities, setRawPriorities] = useState("");
     function updateTasks() {
         // Parse tasks => feed to algorithm => update gui
-        setResult(fcfs(parseTasks(rawBursts, rawArrivals)));
+        setResult(algo(parseTasks(rawBursts, rawArrivals, rawPriorities)));
     }
 
     function prepFilter(setter: React.Dispatch<React.SetStateAction<string>>) {
@@ -22,9 +25,11 @@ export default function FCFSPage() {
 
     return <>
         <InputData
-            onInputArrival={prepFilter(setRawArrivals)}
-            onInputBurst={prepFilter(setRawBursts)}
+            onInputArrivals={prepFilter(setRawArrivals)}
+            onInputBursts={prepFilter(setRawBursts)}
+            onInputPriorities={prepFilter(setRawPriorities)}
             onSolve={updateTasks}
+            showPriority={showPriority}
         >
         </InputData>
         <ChartAndTable result={result} />

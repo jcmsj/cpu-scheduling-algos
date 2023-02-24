@@ -1,36 +1,41 @@
 import { Paper, Typography } from '@mui/material';
 import { useState } from 'react';
-import FCFSPage from './fcfs';
+import { fcfs } from './algos/fcfs';
+import Page from './Page';
 import styles from "./layout.module.css";
-import { SJFPage } from './SJF';
+import DupeExample from './algos/dupeExample';
 
 /**
  * Each algo has its own subpage
  */
 const pages = {
   fcfs: {
-    page: <FCFSPage></FCFSPage>,
+    page: <Page algo={fcfs}/>,
     name: "First Come First Serve (FCFS)",
   },
   sjf: {
-    page: <SJFPage></SJFPage>,
+    page: <Page algo={tasks => ({/**TODO */})}/>,
     name: "Shortest Job First (SJF)",
   },
   srt: {
-    page: <></>,
+    page: <Page algo={tasks => ({/**TODO */})}/>,
     name: "Shortest Remaining Time (SRT)",
   },
   ps: {
-    page: <></>,
+    page: <Page algo={tasks => ({/**TODO */})} showPriority={true}/>,
     name: "Priority Scheduling (PS)",
   },
   rrs: {
-    page: <></>,
+    page: <Page algo={tasks => ({/**TODO */})}/>,
     name: "Round Robin Scheduling (RRS)",
   },
   mqs: {
-    page: <></>,
+    page: <Page algo={tasks => ({/**TODO */})}/>,
     name: "Multilevel Queue Scheduling (MQS)",
+  },
+  dup: {
+    page: <Page algo={DupeExample} />,
+    name: "Dupe Example"
   }
 }
 function App() {

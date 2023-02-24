@@ -1,7 +1,7 @@
 import { TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { Result, Task } from "./Task";
 
-const headers = ["Task", "Arrival Time", "Burst Time", "Finish Time", "Turnaround Time", "Waiting Time"];
+const headers = ["Task", "Arrival Time", "Burst Time", "Finish Time", "Turn Around Time", "Waiting Time"];
 export function Table({ result }: { result: Result<Task> }) {
     return <TableContainer component="table">
         <TableHead>

@@ -9,7 +9,7 @@ export function parseTasks(rawBursts: string, rawArrivals: string): Task[] {
     return stringToNumbers(rawArrivals, bursts.length)
         .map((arrivalTime, i) => {
             return {
-                id: "" + i,
+                id: i,
                 burstTime: bursts[i],
                 waitingTime: 0,
                 turnAroundTime: 0,

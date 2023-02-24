@@ -50,6 +50,8 @@ export function fcfs(tasks: Task[]): Result<Task> {
     calcFinishTime(tasks);
     return {
         tasks,
+         //Set history to the same tasks as there's no dupes here.
+        history:tasks,
         total: {
             turnAroundTime: totalTurnAroundTime,
             waitingTime: totalWaitingTime,

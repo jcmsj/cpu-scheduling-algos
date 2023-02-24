@@ -1,4 +1,5 @@
 import { Typography } from "@mui/material";
+import { useEffect, useRef } from "react";
 import { Result, Task } from "./Task";
 
 export function DanglingBurstTime({ time, style, ...props }: { time: number, style?: React.CSSProperties }) {
@@ -46,9 +47,28 @@ function assignColor(accumulatedBurstTime: number, modifier: number) {
     return `hsl(${accumulatedBurstTime * modifier}, 100%, 60%)`;
 }
 
+/*
+* task.id is not used internally for react as the task may appear multiple times which would conflict with react's key-based diffing system.
+*/
 export function GanttChart({ result }: { result: Partial<Result<Task>> }) {
     let burstTimeSum = 0;
+    const colors = useRef({} as {[key:string]:string});
+    
+    useEffect(() => {
+        colors.current = {};
+    }, [result])
 
+    /**
+     * @see Task.ts
+     * The same pid should have the same color
+     */
+    function assignColorUnlessDup(task:Readonly<Task>) {
+        if(colors.current[task.id]) {
+            return colors.current[task.id]
+        }
+
+        return colors.current[task.id] = assignColor(burstTimeSum, task.burstTime * 17)
+    }
     return <>
         <Typography variant="h3" style={{ textAlign: "center" }}>Gantt Chart</Typography>
         <div style={{
@@ -56,7 +76,7 @@ export function GanttChart({ result }: { result: Partial<Result<Task>> }) {
             textAlign: "center",
             padding: "2vh 2vw"
         }}>
-            {result.tasks == undefined ?
+            {result.history == undefined ?
                 <>
                     <Typography variant="h5">No data to display</Typography>
                 </> :
@@ -66,14 +86,14 @@ export function GanttChart({ result }: { result: Partial<Result<Task>> }) {
                         <span style={{ height: "100%" }}>&nbsp;</span>
                         <DanglingBurstTime time={0} style={{ left: "-0.3em" }} />
                     </Cell>
-                    {result.tasks.map(task =>
-                        <Cell key={task.id}
+                    {result.history.map((task, i) =>
+                        <Cell key={i}
                             burstTime={task.burstTime}
                         >
                             <ProcessInfo
                                 task={task}
                                 style={{
-                                    backgroundColor: assignColor(burstTimeSum, task.burstTime * 17)
+                                    backgroundColor: assignColorUnlessDup(task)
                                 }}
                             />
                             <DanglingBurstTime
