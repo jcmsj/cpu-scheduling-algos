@@ -1,4 +1,5 @@
 import { Result, Task } from "../Task";
+import { sortByArrival } from "../lib/sortByArrival";
 
 /**
  * Updates each task with the correct waiting time and returns the total.
@@ -25,12 +26,6 @@ export function calcTurnAroundTime(tasks: Task[]) {
         task.turnAroundTime = task.burstTime + task.waitingTime;
         return sum + task.turnAroundTime;
     }, 0);
-}
-
-export function sortByArrival(tasks:Task[]) {
-    tasks.sort((a, b) => 
-        a.arrivalTime - b.arrivalTime
-    )
 }
 
 export function calcFinishTime(tasks:Task[]) {
