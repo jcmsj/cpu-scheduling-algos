@@ -15,7 +15,7 @@ export function calcWaitingTime(tasks: Task[]) {
     return sum;
 }
 
-export function calcTotalBurstTime(tasks:Task[]) {
+export function calcTotalBurstTime(tasks: Task[]) {
     return tasks.reduce((sum, task) => sum + task.burstTime, 0);
 }
 /**
@@ -28,12 +28,21 @@ export function calcTurnAroundTime(tasks: Task[]) {
     }, 0);
 }
 
-export function calcFinishTime(tasks:Task[]) {
+export function calcFinishTime(tasks: Task[]) {
     return tasks.reduce((sum, task) =>
         task.finishTime = sum += task.burstTime
-    , 0);
+        , 0);
 }
-export function fcfs(tasks: Task[]):Result<Task> {
+
+/**
+ * Algorithm:
+ * 1. Sort by arrival time.
+ * 2. Waiting time is taken by the sum of the previous' task's waiting time, burst time, and arrival time minus the current task's arrival time.
+ * 3. Turn around time is solved by adding a task's burst time and waiting time.
+ * 4. Finish time is the sum of burst times up until a task.
+ * 5. The average and total values of those parameters are also needed.
+ */
+export function fcfs(tasks: Task[]): Result<Task> {
     sortByArrival(tasks);
     const totalWaitingTime = calcWaitingTime(tasks);
     const totalTurnAroundTime = calcTurnAroundTime(tasks);
@@ -42,13 +51,13 @@ export function fcfs(tasks: Task[]):Result<Task> {
     return {
         tasks,
         total: {
-            turnAroundTime:totalTurnAroundTime,
-            waitingTime:totalWaitingTime,
+            turnAroundTime: totalTurnAroundTime,
+            waitingTime: totalWaitingTime,
             burstTime
         },
         average: {
-            turnAroundTime:totalTurnAroundTime/tasks.length,
-            waitingTime: totalWaitingTime /tasks.length,
+            turnAroundTime: totalTurnAroundTime / tasks.length,
+            waitingTime: totalWaitingTime / tasks.length,
             burstTime: burstTime / tasks.length
         },
     };
