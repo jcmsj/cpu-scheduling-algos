@@ -31,7 +31,7 @@ export function calcTurnAroundTime(tasks: Task[]) {
 export function calcFinishTime(tasks: Task[]) {
     return tasks.reduce((sum, task) =>
         task.finishTime = sum += task.burstTime
-        , 0);
+        , tasks[0]?.arrivalTime ?? 0);
 }
 
 /**
@@ -39,7 +39,7 @@ export function calcFinishTime(tasks: Task[]) {
  * 1. Sort by arrival time.
  * 2. Waiting time is taken by the sum of the previous' task's waiting time, burst time, and arrival time minus the current task's arrival time.
  * 3. Turn around time is solved by adding a task's burst time and waiting time.
- * 4. Finish time is the sum of burst times up until a task.
+ * 4. Finish time is the sum of burst times up until a task and the first task's arrival time taken into account.
  * 5. The average and total values of those parameters are also needed.
  */
 export function fcfs(tasks: Task[]): Result<Task> {
