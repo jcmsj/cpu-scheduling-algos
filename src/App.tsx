@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { fcfs } from './algos/fcfs';
 import Page from './Page';
 import DupeExample from './algos/dupeExample';
+import { ps } from './algos/ps';
 
 interface SubPage {
   page: JSX.Element
@@ -25,8 +26,8 @@ const pages:Record<string, SubPage> = {
     name: "Shortest Remaining Time (SRT)",
   },
   ps: {
-    page: <Page algo={tasks => ({/**TODO */})} showPriority={true}/>,
-    name: "Priority Scheduling (PS)",
+    page: <Page algo={ps} showPriority={true}/>,
+    name: "Priority Scheduling - Preemptive (PS)",
   },
   rrs: {
     page: <Page algo={tasks => ({/**TODO */})} showQuantum={true} />,

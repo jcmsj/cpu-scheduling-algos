@@ -1,14 +1,15 @@
 [x] - First Come First Serve (FCFS)
 [ ] - Shortest-Job-First (SJF) Scheduling
 [ ] - Shortest Remaining Time
-[ ] - Priority Scheduling
+[x] - Priority Scheduling (pre-emptive)
+[ ] - Priority Scheduling (non-preemptive)
 [ ] - Round Robin Scheduling
 [ ] - Multilevel Queue Scheduling
 
-[ ] - Display Average Waiting time
-[ ] - Display Average Turnaround Time
-[ ] - Process may all arrive at time 0 or may arrive any time.
-[ ] - Each process has its burst time.
+[x] - Display Average Waiting time
+[x] - Display Average Turnaround Time
+[x] - Process may all arrive at time 0 or may arrive any time.
+[x] - Each process has its burst time.
 [ ] - Priority might be observed in some cases
 [ ] - Time Slice might be observed in some cases
 [ ] - Pre-emptive or Non pre-emptive might be observed in some cases
