@@ -5,14 +5,18 @@ export function InputData({
     onInputArrivals,
     onInputBursts,
     onInputPriorities,
+    onInputQuantum,
     onSolve,
     showPriority = false,
+    showQuantum = false,
     children }: {
         onInputArrivals: React.ChangeEventHandler,
         onInputBursts: React.ChangeEventHandler,
         onInputPriorities?: React.ChangeEventHandler,
+        onInputQuantum?: React.Dispatch<React.SetStateAction<number>>,
         onSolve: React.MouseEventHandler<HTMLButtonElement>,
         showPriority?: boolean,
+        showQuantum?: boolean,
     } & React.PropsWithChildren) {
     return <Paper
         className="input"
@@ -26,6 +30,7 @@ export function InputData({
         <TextField
             required
             label="Arrival times (space separated)"
+            placeholder="e.g. 0 1 2"
             onChange={onInputArrivals}
         >
         </TextField>
@@ -33,12 +38,23 @@ export function InputData({
             required
             label="Burst times (space separated)"
             onChange={onInputBursts}
+            placeholder="e.g. 2 4 6"
         />
         {showPriority ?
             <TextField
                 required
                 label="Priorities (space separated)"
+                placeholder="e.g. 0 1 3"
                 onChange={onInputPriorities}
+            /> : null
+        }
+        {showQuantum ?
+            <TextField
+                required
+                label="Time quantum"
+                placeholder="2"
+                type="number"
+                onChange={e => onInputQuantum?(parseInt(e.target.value)):null}
             /> : null
         }
         {children}

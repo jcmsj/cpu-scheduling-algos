@@ -6,8 +6,7 @@ import { sortByArrival } from "../lib/sortByArrival";
  */
 export function calcWaitingTime(tasks: Task[]) {
     tasks[0].waitingTime = 0;
-
-    let sum = 0;
+    let sum = 0;    
     tasks.reduce((previous, task) => {
         sum += task.waitingTime = previous.burstTime + previous.waitingTime + previous.arrivalTime - task.arrivalTime
         return task;
@@ -18,6 +17,7 @@ export function calcWaitingTime(tasks: Task[]) {
 export function calcTotalBurstTime(tasks: Task[]) {
     return tasks.reduce((sum, task) => sum + task.burstTime, 0);
 }
+
 /**
  * Updates each task with the correct turn around time and returns the total.
  */

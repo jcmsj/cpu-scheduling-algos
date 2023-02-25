@@ -29,7 +29,7 @@ const pages:Record<string, SubPage> = {
     name: "Priority Scheduling (PS)",
   },
   rrs: {
-    page: <Page algo={tasks => ({/**TODO */})}/>,
+    page: <Page algo={tasks => ({/**TODO */})} showQuantum={true} />,
     name: "Round Robin Scheduling (RRS)",
   },
   mqs: {
