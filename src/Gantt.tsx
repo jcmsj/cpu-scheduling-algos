@@ -80,7 +80,7 @@ export function GanttChart({ result }: { result: Result<Task> }) {
         {/* Make the gantt's zero start a bit before the first cell  */}
         < Cell burstTime={0}>
             <span style={{ height: "100%" }}>&nbsp;</span>
-            <DanglingBurstTime time={0} style={{ left: "-0.3em" }} />
+            <DanglingBurstTime time={result.tasks[0].arrivalTime} style={{ left: "-0.3em" }} />
         </Cell>
         {result.history.map((task, i) =>
             <Cell key={i}
