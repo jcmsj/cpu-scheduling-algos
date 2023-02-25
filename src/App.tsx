@@ -2,8 +2,9 @@ import { Paper, Typography } from '@mui/material';
 import { useState } from 'react';
 import { fcfs } from './algos/fcfs';
 import Page from './Page';
-import DupeExample from './algos/dupeExample';
 import { ps } from './algos/ps';
+import { srtf } from './algos/srtf';
+import { sjf } from './algos/sjf';
 
 interface SubPage {
   page: JSX.Element
@@ -18,11 +19,11 @@ const pages:Record<string, SubPage> = {
     name: "First Come First Serve (FCFS)",
   },
   sjf: {
-    page: <Page algo={tasks => ({/**TODO */})}/>,
+    page: <Page algo={sjf}/>,
     name: "Shortest Job First (SJF)",
   },
   srt: {
-    page: <Page algo={tasks => ({/**TODO */})}/>,
+    page: <Page algo={srtf}/>,
     name: "Shortest Remaining Time (SRT)",
   },
   ps: {
@@ -36,10 +37,6 @@ const pages:Record<string, SubPage> = {
   mqs: {
     page: <Page algo={tasks => ({/**TODO */})}/>,
     name: "Multilevel Queue Scheduling (MQS)",
-  },
-  dup: {
-    page: <Page algo={DupeExample} />,
-    name: "Dupe Example"
   }
 }
 function App() {

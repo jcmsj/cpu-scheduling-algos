@@ -5,15 +5,17 @@ import { Result, Task } from "./Task";
 import GanttChartContainer from "./Gantt";
 import StatsContainer from "./Stats";
 
+interface PageProps {
+    algo: (tasks: Task[], quantum?: number) => Result<Task>;
+    showPriority?: boolean;
+    showQuantum?: boolean;
+}
+
 export default function Page({
     algo,
     showPriority = false,
     showQuantum = false
-}: {
-    algo: (tasks: Task[]) => Result<Task>,
-    showPriority?: boolean,
-    showQuantum?: boolean,
-}) {
+}: PageProps) {
     const [result, setResult] = useState<Result<Task>>({} as any);
     const [rawBursts, setRawBursts] = useState("");
     const [rawArrivals, setRawArrivals] = useState("");
@@ -21,11 +23,7 @@ export default function Page({
     const [quantum, setQuantum] = useState(1);
     function updateTasks() {
         // Parse tasks => feed to algorithm => update gui
-        if (showQuantum) {
-            setResult(algo(parseTasks(rawBursts, rawArrivals, rawPriorities)));
-        }  else {
-            setResult(algo(parseTasks(rawBursts, rawArrivals, rawPriorities)));
-        }
+        setResult(algo(parseTasks(rawBursts, rawArrivals, rawPriorities), quantum));
     }
 
     function prepFilter(setter: React.Dispatch<React.SetStateAction<string>>) {
@@ -42,7 +40,7 @@ export default function Page({
             onInputQuantum={setQuantum}
             onSolve={updateTasks}
             showPriority={showPriority}
-            showQuantum = {showQuantum}
+            showQuantum={showQuantum}
         >
         </InputData>
         <GanttChartContainer result={result} />
