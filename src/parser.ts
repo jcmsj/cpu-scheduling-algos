@@ -3,9 +3,16 @@ import { Task } from "./Task";
 export function stringToNumbers(s: string, limit?: number) {
     return s.trim().split(" ", limit).map(n => parseInt(n));
 }
-export function parseTasks(rawBursts: string, rawArrivals: string): Task[] {
+export function parseTasks(
+    rawBursts: string,
+    rawArrivals: string,
+    rawPriorities?: string,
+): Task[] {
     //Convert the string data into int array
     const bursts = stringToNumbers(rawBursts);
+    const prios = typeof rawPriorities == "string" ? 
+        stringToNumbers(rawPriorities) 
+        : new Array(bursts.length).fill(0);
     return stringToNumbers(rawArrivals, bursts.length)
         .map((arrivalTime, i) => {
             return {
@@ -15,7 +22,7 @@ export function parseTasks(rawBursts: string, rawArrivals: string): Task[] {
                 turnAroundTime: 0,
                 arrivalTime,
                 finishTime: 0,
-                priority: 0,
+                priority: prios[i],
             }
         });
 }

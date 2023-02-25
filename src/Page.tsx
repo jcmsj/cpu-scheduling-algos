@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { InputData } from "./InputData";
 import { parseTasks } from "./parser";
-import ChartAndTable from "./ChartAndTable";
 import { Result, Task } from "./Task";
+import GanttChartContainer from "./Gantt";
+import StatsContainer from "./Stats";
 
 export default function Page({algo, showPriority=false}:{
     algo:(tasks:Task[])=>Result<Task>,
@@ -32,6 +33,7 @@ export default function Page({algo, showPriority=false}:{
             showPriority={showPriority}
         >
         </InputData>
-        <ChartAndTable result={result} />
+        <GanttChartContainer result={result} />
+        <StatsContainer result={result} />
     </>
 }

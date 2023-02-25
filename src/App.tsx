@@ -2,13 +2,16 @@ import { Paper, Typography } from '@mui/material';
 import { useState } from 'react';
 import { fcfs } from './algos/fcfs';
 import Page from './Page';
-import styles from "./layout.module.css";
 import DupeExample from './algos/dupeExample';
 
+interface SubPage {
+  page: JSX.Element
+  name: string
+}
 /**
  * Each algo has its own subpage
  */
-const pages = {
+const pages:Record<string, SubPage> = {
   fcfs: {
     page: <Page algo={fcfs}/>,
     name: "First Come First Serve (FCFS)",
@@ -41,17 +44,15 @@ const pages = {
 function App() {
   const [algoSelected, setAlgo] = useState<keyof typeof pages>("fcfs");
   return <>
-    <Paper>
-      <Typography variant="h4">Algorithm:</Typography>
+    <Paper className="switcher pad">
+      <Typography variant="h3">Algorithm:</Typography>
       <select value={algoSelected} onChange={e => setAlgo(e.target.value as any)}>
         {Object.entries(pages).map(([key, val]) =>
           <option value={key} key={key}>{val.name}</option>
         )}
       </select>
     </Paper>
-    <div className={styles.divider}>
       {pages[algoSelected].page}
-    </div>
   </>
 }
 

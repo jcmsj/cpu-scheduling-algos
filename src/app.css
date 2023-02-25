@@ -1,5 +1,36 @@
 #root {
-    display: flex;
-    flex-direction: column;
-    row-gap: 2vh;
+    display: grid;
+    row-gap: 3vh;
+}
+
+.pad {
+    padding: 2vh 2vw;
+}
+@media screen and (min-width: 1024px) {
+    #root {
+        grid-template-areas: 
+        "switcher gantt gantt gantt gantt gantt"
+        "side gantt gantt gantt gantt gantt"
+        "side stat stat stat stat stat"
+        "side stat stat stat stat stat";
+        /* grid-template-columns: 3fr 7fr; */
+        column-gap: 3vh;
+    }
+    .gantt {
+        grid-area: gantt;
+        /* grid-row: 1 / -1;
+        grid-column-start: 2; */
+    }
+
+    .input {
+        grid-area: side;
+    }
+
+    .switcher {
+        grid-area: switcher;
+    }
+
+    .stat {
+        grid-area: stat;
+    }
 }

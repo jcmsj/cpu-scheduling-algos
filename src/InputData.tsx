@@ -14,12 +14,14 @@ export function InputData({
         onSolve: React.MouseEventHandler<HTMLButtonElement>,
         showPriority?: boolean,
     } & React.PropsWithChildren) {
-    return <Paper style={{
-        display: "flex",
-        flexDirection: "column",
-        rowGap: "2vh",
-        padding: "1vh 1vw"
-    }}>
+    return <Paper
+        className="input"
+        style={{
+            display: "flex",
+            flexDirection: "column",
+            rowGap: "2vh",
+            padding: "1vh 1vw"
+        }}>
         <Typography variant="h3">Input</Typography>
         <TextField
             required
@@ -32,12 +34,12 @@ export function InputData({
             label="Burst times (space separated)"
             onChange={onInputBursts}
         />
-        {showPriority?
+        {showPriority ?
             <TextField
-            required
-            label="Priorities (space separated)"
-            onChange={onInputPriorities}
-            />:null
+                required
+                label="Priorities (space separated)"
+                onChange={onInputPriorities}
+            /> : null
         }
         {children}
         <span>

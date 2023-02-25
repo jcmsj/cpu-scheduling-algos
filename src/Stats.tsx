@@ -1,8 +1,9 @@
-import { TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Paper, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import NoData from "./NoData";
 import { Result, Task } from "./Task";
 
 const headers = ["Task", "Arrival Time", "Burst Time", "Finish Time", "Turn Around Time", "Waiting Time"];
-export function Table({ result }: { result: Result<Task> }) {
+export function Stats({ result }: { result: Result<Task> }) {
     return <TableContainer component="table">
         <TableHead>
             <TableRow>
@@ -28,4 +29,19 @@ export function Table({ result }: { result: Result<Task> }) {
             </TableRow>
         </TableBody>
     </TableContainer>
+}
+
+export default function StatsContainer({ result }: { result: Result<Task> }) {
+    return <Paper
+        className="stat"
+        style={{
+            display: "grid",
+            justifyContent: "center"
+        }}>
+        <Typography variant="h3" textAlign="center">Statistics</Typography>
+        {result.tasks ?
+            <Stats result={result} />
+            : <NoData />
+        }
+    </Paper>
 }
