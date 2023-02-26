@@ -10,7 +10,7 @@ export function emptyOrToNumbers(s: string, size?: number, filler: number = 0) {
 
 /**
  * Parses user input into arrays of the relevant data
- * If the raw arrival times or priorities are empty strings, these would be filled with array of zeroes with the burst time's size.
+ * If the raw arrival times or priorities are empty strings, empty arrays would be returned.
  */
 export function parseTasks(
     rawBursts: string,

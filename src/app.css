@@ -13,13 +13,10 @@
         "side gantt gantt gantt gantt gantt"
         "side stat stat stat stat stat"
         "side stat stat stat stat stat";
-        /* grid-template-columns: 3fr 7fr; */
         column-gap: 3vh;
     }
     .gantt {
         grid-area: gantt;
-        /* grid-row: 1 / -1;
-        grid-column-start: 2; */
     }
 
     .input {
