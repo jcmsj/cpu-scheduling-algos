@@ -32,7 +32,7 @@ function App() {
     },
     ps: {
       page: <Page algo={ps} showPriority={true} />,
-      name: "Priority Scheduling - Preemptive (PS)",
+      name: "Priority Scheduling - Non-preemptive (PS)",
     },
     rrs: {
       page: <Page algo={tasks => ({/**TODO */ })} showQuantum={true} />,
