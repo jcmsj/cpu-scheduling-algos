@@ -52,7 +52,7 @@ function assignColor(accumulatedBurstTime: number, modifier: number) {
 * task.id is not used internally for react as the task may appear multiple times which would conflict with react's key-based diffing system.
 */
 export function GanttChart({ result }: { result: Result<Task> }) {
-    let burstTimeSum = 0;
+    let burstTimeSum = result.tasks[0].arrivalTime ?? 0;
     const colors = useRef<Record<string, string>>({});
 
     useEffect(() => {

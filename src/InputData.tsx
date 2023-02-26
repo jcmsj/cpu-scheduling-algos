@@ -13,7 +13,7 @@ export function InputData({
         onInputArrivals: React.ChangeEventHandler,
         onInputBursts: React.ChangeEventHandler,
         onInputPriorities?: React.ChangeEventHandler,
-        onInputQuantum?: React.Dispatch<React.SetStateAction<number>>,
+        onInputQuantum: React.Dispatch<React.SetStateAction<number>>,
         onSolve: React.MouseEventHandler<HTMLButtonElement>,
         showPriority?: boolean,
         showQuantum?: boolean,
@@ -58,7 +58,7 @@ export function InputData({
                 placeholder="2"
                 type="number"
                 id="quantum"
-                onChange={e => onInputQuantum?(parseInt(e.target.value)):null}
+                onChange={e => onInputQuantum(parseInt(e.target.value))}
             /> : null
         }
         {children}

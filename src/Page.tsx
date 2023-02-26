@@ -23,7 +23,10 @@ export default function Page({
     const [quantum, setQuantum] = useState(1);
     function updateTasks() {
         // Parse tasks => feed to algorithm => update gui
-        setResult(algo(parseTasks(rawBursts, rawArrivals, rawPriorities), quantum));
+        setResult(algo(
+            parseTasks(rawBursts, rawArrivals, rawPriorities),
+            quantum
+        ));
     }
 
     function prepFilter(setter: React.Dispatch<React.SetStateAction<string>>) {

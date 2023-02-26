@@ -17,10 +17,16 @@ export function whenDone(task: Task, time: number) {
 }
 
 /**
+ * Creates a clone of the tasks with a new field - remaining time
+ */
+export function initRemaining(tasks:Task[]):StartedTask[] {
+    return tasks.map(task => ({ ...task, remainingTime: task.burstTime }));
+}
+/**
  * Based on https://www.geeksforgeeks.org/shortest-remaining-time-first-preemptive-sjf-scheduling-algorithm
  */
 export function simulate(tasks: Task[]) {
-    const clone: StartedTask[] = tasks.map(task => ({ ...task, remainingTime: task.burstTime }));
+    const clones = initRemaining(tasks);
     let complete = 0;
     const history: StartedTask[] = []
     let time = 0;
@@ -43,7 +49,7 @@ export function simulate(tasks: Task[]) {
         }
     }
     while (complete < tasks.length) {
-        for (const task of clone) {
+        for (const task of clones) {
             if (task.arrivalTime <= time &&
                 (task.remainingTime < minRemaining && task.remainingTime > 0)) {
                 minRemaining = task.remainingTime;
@@ -82,16 +88,19 @@ export function simulate(tasks: Task[]) {
 
     //Must record the last active task
     history.push(active);
-    return { clone, history };
+    return { clone: clones, history };
 }
 
+export function calcTotalWaiting(tasks:Task[]) {
+    return tasks.reduce((sum, task) => sum += task.waitingTime, 0);
+}
 export function srtf(tasks: Task[]): Result<Task> {
     sortByArrival(tasks);
     const { clone, history } = simulate(tasks);
     tasks = clone;
     const totalTurnAroundTime = calcTurnAroundTime(tasks);
     const burstTime = calcTotalBurstTime(tasks);
-    const totalWaitingTime = tasks.reduce((sum, task) => sum += task.waitingTime, 0);
+    const totalWaitingTime = calcTotalWaiting(tasks);
     return {
         tasks,
         //Set history to the same tasks as there's no dupes here.

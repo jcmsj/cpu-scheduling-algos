@@ -5,6 +5,7 @@ import Page from './Page';
 import { ps } from './algos/ps';
 import { srtf } from './algos/srtf';
 import { sjf } from './algos/sjf';
+import { rr } from './algos/rr';
 
 interface SubPage {
   page: JSX.Element
@@ -35,7 +36,7 @@ function App() {
       name: "Priority Scheduling - Non-preemptive (PS)",
     },
     rrs: {
-      page: <Page algo={tasks => ({/**TODO */ })} showQuantum={true} />,
+      page: <Page algo={rr} showQuantum={true} />,
       name: "Round Robin Scheduling (RRS)",
     },
     mqs: {
