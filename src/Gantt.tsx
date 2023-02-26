@@ -114,7 +114,7 @@ export default function GanttChartContainer({ result }: { result?: Result<Task> 
         </Typography>
         {result?.history ?
             <GanttChart result={result} /> :
-            <NoData />
+            <NoData style={{ textAlign: "center" }} />
         }
     </Paper>
 }

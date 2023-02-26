@@ -1,7 +1,7 @@
-import Typography from "@mui/material/Typography";
+import Typography, { TypographyProps } from "@mui/material/Typography";
 
-export default function NoData() {
-    return <Typography variant="h5">
+export default function NoData(props:TypographyProps) {
+    return <Typography variant="h5" {...props}>
         No data to display
     </Typography>
 }

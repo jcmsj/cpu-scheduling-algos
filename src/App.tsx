@@ -1,4 +1,4 @@
-import { Paper, Typography } from '@mui/material';
+import { MenuItem, Paper, Select, Typography } from '@mui/material';
 import { useState } from 'react';
 import { fcfs } from './algos/fcfs';
 import Page from './Page';
@@ -17,42 +17,45 @@ interface SubPage {
 function App() {
   const [algoSelected, setAlgo] = useState<keyof typeof pages>("fcfs");
 
-  const pages:Record<string, SubPage> = {
+  const pages: Record<string, SubPage> = {
     fcfs: {
-      page: <Page algo={fcfs}/>,
+      page: <Page algo={fcfs} />,
       name: "First Come First Serve (FCFS)",
     },
     sjf: {
-      page: <Page algo={sjf}/>,
+      page: <Page algo={sjf} />,
       name: "Shortest Job First (SJF)",
     },
     srt: {
-      page: <Page algo={srtf}/>,
+      page: <Page algo={srtf} />,
       name: "Shortest Remaining Time (SRT)",
     },
     ps: {
-      page: <Page algo={ps} showPriority={true}/>,
+      page: <Page algo={ps} showPriority={true} />,
       name: "Priority Scheduling - Preemptive (PS)",
     },
     rrs: {
-      page: <Page algo={tasks => ({/**TODO */})} showQuantum={true} />,
+      page: <Page algo={tasks => ({/**TODO */ })} showQuantum={true} />,
       name: "Round Robin Scheduling (RRS)",
     },
     mqs: {
-      page: <Page algo={tasks => ({/**TODO */})}/>,
+      page: <Page algo={tasks => ({/**TODO */ })} />,
       name: "Multilevel Queue Scheduling (MQS)",
     }
   }
   return <>
     <Paper className="switcher pad">
       <Typography variant="h3">Algorithm:</Typography>
-      <select value={algoSelected} onChange={e => setAlgo(e.target.value as any)}>
+      <Select
+        value={algoSelected}
+        onChange={e => setAlgo(e.target.value as any)}
+      >
         {Object.entries(pages).map(([key, val]) =>
-          <option value={key} key={key}>{val.name}</option>
+          <MenuItem value={key} key={key}>{val.name}</MenuItem>
         )}
-      </select>
+      </Select>
     </Paper>
-      {pages[algoSelected].page}
+    {pages[algoSelected].page}
   </>
 }
 
