@@ -3,37 +3,33 @@ import { Task } from "./Task";
 export function stringToNumbers(s: string, limit?: number) {
     return s.trim().split(" ", limit).map(n => parseInt(n));
 }
-export function parseTasks(
-    rawBursts: string,
-    rawArrivals: string,
-    rawPriorities?: string,
-): Task[] {
-    //Convert the string data into int array
-    const bursts = stringToNumbers(rawBursts);
-    const prios = typeof rawPriorities == "string" ? 
-        stringToNumbers(rawPriorities) 
-        : new Array(bursts.length).fill(0);
-    return stringToNumbers(rawArrivals, bursts.length)
-        .map((arrivalTime, i) => {
-            return {
-                id: i,
-                burstTime: bursts[i],
-                waitingTime: 0,
-                turnAroundTime: 0,
-                arrivalTime,
-                finishTime: 0,
-                priority: prios[i],
-            }
-        });
+
+export function fillIfEmptyOrToNumbers(s: string, size: number, filler: number = 0) {
+    return s.length == 0 ? new Array(size).fill(filler) : stringToNumbers(s, size);
 }
 
 /**
- * For algorithms that include priorities, call this function after using parseTasks()
+ * Parses user input into arrays of the relevant data
+ * If the raw arrival times or priorities are empty strings, these would be filled with array of zeroes with the burst time's size.
  */
-export function addPrio(tasks: Task[], rawPriorities: string) {
-    const prios = stringToNumbers(rawPriorities, tasks.length);
-    tasks.map((task, i) => {
-        task.priority = prios[i]
-    })
-    return tasks;
+export function parseTasks(
+    rawBursts: string,
+    rawArrivals: string,
+    rawPriorities: string,
+): Task[] {
+    //Convert the string data into int array
+    [rawArrivals, rawBursts, rawPriorities].map(s => s?.trim());
+    const bursts = stringToNumbers(rawBursts);
+    const prios = fillIfEmptyOrToNumbers(rawPriorities, bursts.length);
+    const arrivals = fillIfEmptyOrToNumbers(rawArrivals, bursts.length);
+    return arrivals
+        .map((arrivalTime, i) => ({
+            id: i,
+            burstTime: bursts[i],
+            waitingTime: 0,
+            turnAroundTime: 0,
+            arrivalTime,
+            finishTime: 0,
+            priority: prios[i],
+        }));
 }
