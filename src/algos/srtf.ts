@@ -6,34 +6,67 @@ export interface StartedTask extends Task {
     remainingTime: number;
 }
 
-export function findWaitingTime(tasks: Task[]) {
+export function whenDone(task: Task, time: number) {
+    //Find finish time and waiting time of the task
+    task.finishTime = time + 1;
+    task.waitingTime = Math.max(
+        task.finishTime -
+        task.arrivalTime -
+        task.burstTime,
+        0);
+}
+
+/**
+ * Based on https://www.geeksforgeeks.org/shortest-remaining-time-first-preemptive-sjf-scheduling-algorithm
+ */
+export function simulate(tasks: Task[]) {
     const clone: StartedTask[] = tasks.map(task => ({ ...task, remainingTime: task.burstTime }));
     let complete = 0;
+    const history: StartedTask[] = []
     let time = 0;
     let check = false;
-    let minBT = Number.MAX_SAFE_INTEGER;
-    let active:StartedTask = undefined!;
+    let minRemaining = Number.MAX_SAFE_INTEGER;
+    let active: StartedTask = undefined!;
+    let activeTime = 0; //For snapshots
+
+    function snapShot(task: StartedTask) {
+        //Record only if the active would change
+        if (active && active.id !== task.id) {
+            const snapshot = {
+                ...active,
+                burstTime: activeTime
+            };
+            if (snapshot.burstTime > 0) {
+                history.push(snapshot)
+            }
+            activeTime = 0;
+        }
+    }
     while (complete < tasks.length) {
-        for (let i = 0; i < clone.length; i++) {
-            const task = clone[i];
-            if (task.arrivalTime <= time && (task.remainingTime < minBT && task.remainingTime > 0)) {
-                minBT = task.remainingTime;
+        for (const task of clone) {
+            if (task.arrivalTime <= time &&
+                (task.remainingTime < minRemaining && task.remainingTime > 0)) {
+                minRemaining = task.remainingTime;
+                //Record the process change which would be displayed in Gantt.
+                snapShot(task);
                 active = task;
                 check = true;
             }
         }
 
-        if (check === false || active === undefined) {
+        if (check === false) {
             time++;
+            activeTime++;
             continue;
         }
         // Reduce remaining time by one
         active.remainingTime--;
+        activeTime++;
 
         //Update minimum
-        minBT = active.remainingTime;
-        if (minBT <= 0) {
-            minBT = Number.MAX_SAFE_INTEGER;
+        minRemaining = active.remainingTime;
+        if (minRemaining <= 0) {
+            minRemaining = Number.MAX_SAFE_INTEGER;
         }
 
         // When process completes
@@ -41,32 +74,28 @@ export function findWaitingTime(tasks: Task[]) {
             //Increment complete
             complete++
             check = false;
-
-            //Find finish time and waiting time of current process
-            active.finishTime = time + 1;
-            active.waitingTime = Math.max(
-                active.finishTime - 
-                active.arrivalTime - 
-                active.burstTime, 
-            0);
+            whenDone(active, time)
         }
 
         time++;
     }
 
-    return clone;
+    //Must record the last active task
+    history.push(active);
+    return { clone, history };
 }
 
 export function srtf(tasks: Task[]): Result<Task> {
     sortByArrival(tasks);
-    tasks = findWaitingTime(tasks);
+    const { clone, history } = simulate(tasks);
+    tasks = clone;
     const totalTurnAroundTime = calcTurnAroundTime(tasks);
     const burstTime = calcTotalBurstTime(tasks);
     const totalWaitingTime = tasks.reduce((sum, task) => sum += task.waitingTime, 0);
     return {
         tasks,
-         //Set history to the same tasks as there's no dupes here.
-        history:tasks,
+        //Set history to the same tasks as there's no dupes here.
+        history,
         total: {
             turnAroundTime: totalTurnAroundTime,
             waitingTime: totalWaitingTime,

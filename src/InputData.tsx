@@ -31,6 +31,7 @@ export function InputData({
             required
             label="Arrival times (space separated)"
             placeholder="e.g. 0 1 2"
+            id="arrivals"
             onChange={onInputArrivals}
         >
         </TextField>
@@ -38,6 +39,7 @@ export function InputData({
             required
             label="Burst times (space separated)"
             onChange={onInputBursts}
+            id="bursts"
             placeholder="e.g. 2 4 6"
         />
         {showPriority ?
@@ -46,6 +48,7 @@ export function InputData({
                 label="Priorities (space separated)"
                 placeholder="e.g. 0 1 3"
                 onChange={onInputPriorities}
+                id="prios"
             /> : null
         }
         {showQuantum ?
@@ -54,6 +57,7 @@ export function InputData({
                 label="Time quantum"
                 placeholder="2"
                 type="number"
+                id="quantum"
                 onChange={e => onInputQuantum?(parseInt(e.target.value)):null}
             /> : null
         }
