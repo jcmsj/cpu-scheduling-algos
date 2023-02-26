@@ -15,7 +15,6 @@ export function rr(tasks: Task[], quantum: number): Result<Task> {
     const clones = initRemaining(tasks);
     // Starting time would be the 1st task's arrival time
     let time = clones[0].arrivalTime ?? 0;
-    clones[0]!.finishTime += quantum;
     let todos = clones.length;
     const history: Task[] = []
 

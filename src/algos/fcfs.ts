@@ -31,7 +31,7 @@ export function calcTurnAroundTime(tasks: Task[]) {
 export function calcFinishTime(tasks: Task[]) {
     return tasks.reduce((sum, task) =>
         task.finishTime = sum += task.burstTime
-        , tasks[0]?.arrivalTime ?? 0);
+        , (tasks[0]?.arrivalTime) ?? 0);
 }
 
 /**

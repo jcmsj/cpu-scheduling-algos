@@ -4,8 +4,8 @@ export function stringToNumbers(s: string, limit?: number) {
     return s.trim().split(" ", limit).map(n => parseInt(n));
 }
 
-export function fillIfEmptyOrToNumbers(s: string, size: number, filler: number = 0) {
-    return s.length == 0 ? new Array(size).fill(filler) : stringToNumbers(s, size);
+export function emptyOrToNumbers(s: string, size?: number, filler: number = 0) {
+    return s.length == 0 ? [] : stringToNumbers(s, size);
 }
 
 /**
@@ -18,10 +18,10 @@ export function parseTasks(
     rawPriorities: string,
 ): Task[] {
     //Convert the string data into int array
-    [rawArrivals, rawBursts, rawPriorities].map(s => s?.trim());
-    const bursts = stringToNumbers(rawBursts);
-    const prios = fillIfEmptyOrToNumbers(rawPriorities, bursts.length);
-    const arrivals = fillIfEmptyOrToNumbers(rawArrivals, bursts.length);
+    [rawArrivals, rawBursts, rawPriorities].map(s =>  s.trim()).filter(s => s.length == 0);
+    const bursts = emptyOrToNumbers(rawBursts);
+    const prios = emptyOrToNumbers(rawPriorities, bursts.length);
+    const arrivals = emptyOrToNumbers(rawArrivals, bursts.length);
     return arrivals
         .map((arrivalTime, i) => ({
             id: i,

@@ -6,6 +6,7 @@ import { ps } from './algos/ps';
 import { srtf } from './algos/srtf';
 import { sjf } from './algos/sjf';
 import { rr } from './algos/rr';
+import { mqs } from './algos/mqs';
 
 interface SubPage {
   page: JSX.Element
@@ -40,7 +41,7 @@ function App() {
       name: "Round Robin Scheduling (RRS)",
     },
     mqs: {
-      page: <Page algo={tasks => ({/**TODO */ })} />,
+      page: <Page algo={mqs} showPriority={true} />,
       name: "Multilevel Queue Scheduling (MQS)",
     }
   }

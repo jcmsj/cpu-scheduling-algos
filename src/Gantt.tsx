@@ -52,7 +52,7 @@ function assignColor(accumulatedBurstTime: number, modifier: number) {
 * task.id is not used internally for react as the task may appear multiple times which would conflict with react's key-based diffing system.
 */
 export function GanttChart({ result }: { result: Result<Task> }) {
-    let burstTimeSum = result.tasks[0].arrivalTime ?? 0;
+    let burstTimeSum = (result.tasks[0]?.arrivalTime) ?? 0;
     const colors = useRef<Record<string, string>>({});
 
     useEffect(() => {
@@ -80,7 +80,7 @@ export function GanttChart({ result }: { result: Result<Task> }) {
         {/* Make the gantt's zero start a bit before the first cell  */}
         < Cell burstTime={0}>
             <span style={{ height: "100%" }}>&nbsp;</span>
-            <DanglingBurstTime time={result.tasks[0].arrivalTime} style={{ left: "-0.3em" }} />
+            <DanglingBurstTime time={burstTimeSum} style={{ left: "-0.3em" }} />
         </Cell>
         {result.history.map((task, i) =>
             <Cell key={i}

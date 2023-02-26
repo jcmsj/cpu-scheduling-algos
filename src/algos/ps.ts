@@ -1,9 +1,9 @@
 import { Result, Task } from "../Task";
-import { sortByPriority } from "../lib/sortByPriority";
-import { calcFinishTime, calcTotalBurstTime, calcTurnAroundTime, calcWaitingTime } from "./fcfs";
+import { sortByPriorityAndArrival } from "../lib/sortByPriorityAndArrival";
+import { calcFinishTime, calcTotalBurstTime, calcTurnAroundTime, calcWaitingTime} from "./fcfs";
 
 export function ps(tasks: Task[]): Result<Task> {
-    sortByPriority(tasks);
+    tasks = sortByPriorityAndArrival(tasks);
     const totalWaitingTime = calcWaitingTime(tasks);
     const totalTurnAroundTime = calcTurnAroundTime(tasks);
     const burstTime = calcTotalBurstTime(tasks);
