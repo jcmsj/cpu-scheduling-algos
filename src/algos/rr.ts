@@ -9,7 +9,7 @@ export function calcTotalTurnAroundTime(tasks: Task[]) {
 /**
  * Based on https://www.geeksforgeeks.org/program-for-round-robin-scheduling-for-the-same-arrival-time
  */
-export function rr(tasks: Task[], quantum: number): Result<Task> {
+export function rr(tasks: Task[], quantum: number=1): Result<Task> {
     quantum = Math.max(1, quantum); // Prevent quantum less than 1
     sortByArrival(tasks);
     const clones = initRemaining(tasks);
